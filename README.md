@@ -1,5 +1,58 @@
 # PHP_Laravel12_MIcroscope
 
+<p align="center">
+<a href="#"><img src="https://img.shields.io/badge/Laravel-12-red" alt="Laravel Version"></a>
+<a href="#"><img src="https://img.shields.io/badge/PHP-8.2+-blue" alt="PHP Version"></a>
+<a href="#"><img src="https://img.shields.io/badge/Microscope-Enabled-green" alt="Microscope Enabled"></a>
+<a href="#"><img src="https://img.shields.io/badge/Code%20Quality-Automated-success" alt="Code Quality"></a>
+</p>
+
+---
+
+##  Overview
+
+**PHP_Laravel12_Microscope** is a Laravel 12 demonstration project showing how to integrate and use **Laravel Microscope** to maintain clean, optimized, and production-ready code.
+
+This project focuses on automated code analysis, refactoring assistance, and detection of common Laravel bad practices during development.
+
+---
+
+##  Features
+
+*  Detect unused imports automatically
+*  Refactor nested logic using early returns
+*  Validate routes and controller methods
+*  Detect dead controller actions
+*  Identify bad practices like `env()` misuse
+*  Automatically remove debug statements (`dd`, `dump`)
+*  Enforce proper import structure
+*  Perform full project code scan before commit
+
+---
+
+##  Folder Structure
+
+```
+PHP_Laravel12_Microscope/
+│
+├── app/
+│   ├── Http/
+│   │   └── Controllers/
+│   │       └── DemoController.php
+│   ├── Models/
+│   └── ...
+│
+├── config/
+│   └── microscope.php
+│
+├── routes/
+│   └── web.php
+│
+├── search_replace.php
+├── .env
+└── README.md
+```
+
 ---
 
 ## 1. Create New Laravel Project
