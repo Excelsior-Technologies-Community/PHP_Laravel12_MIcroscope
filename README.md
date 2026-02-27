@@ -1,59 +1,498 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# PHP_Laravel12_MIcroscope
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+<a href="#"><img src="https://img.shields.io/badge/Laravel-12-red" alt="Laravel Version"></a>
+<a href="#"><img src="https://img.shields.io/badge/PHP-8.2+-blue" alt="PHP Version"></a>
+<a href="#"><img src="https://img.shields.io/badge/Microscope-Enabled-green" alt="Microscope Enabled"></a>
+<a href="#"><img src="https://img.shields.io/badge/Code%20Quality-Automated-success" alt="Code Quality"></a>
 </p>
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+##  Overview
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**PHP_Laravel12_Microscope** is a Laravel 12 demonstration project showing how to integrate and use **Laravel Microscope** to maintain clean, optimized, and production-ready code.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+This project focuses on automated code analysis, refactoring assistance, and detection of common Laravel bad practices during development.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+##  Features
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+*  Detect unused imports automatically
+*  Refactor nested logic using early returns
+*  Validate routes and controller methods
+*  Detect dead controller actions
+*  Identify bad practices like `env()` misuse
+*  Automatically remove debug statements (`dd`, `dump`)
+*  Enforce proper import structure
+*  Perform full project code scan before commit
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+##  Folder Structure
 
-### Premium Partners
+```
+PHP_Laravel12_Microscope/
+│
+├── app/
+│   ├── Http/
+│   │   └── Controllers/
+│   │       └── DemoController.php
+│   ├── Models/
+│   └── ...
+│
+├── config/
+│   └── microscope.php
+│
+├── routes/
+│   └── web.php
+│
+├── search_replace.php
+├── .env
+└── README.md
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+## 1. Create New Laravel Project
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+composer create-project laravel/laravel PHP_Laravel12_Microscope
+cd PHP_Laravel12_Microscope
+```
 
-## Code of Conduct
+### .env
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```env
+MICROSCOPE_ENABLED=true
 
-## Security Vulnerabilities
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## 2. Install Laravel Microscope
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+composer require imanghafoori/laravel-microscope --dev
+```
+
+### Publish config
+
+```bash
+php artisan vendor:publish --provider="Imanghafoori\LaravelMicroscope\LaravelMicroscopeServiceProvider"
+```
+
+Now file created:
+
+```
+config/microscope.php
+```
+
+---
+
+## 3. Basic Clean Route Setup
+
+Open:
+
+```
+routes/web.php
+```
+
+```php
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', function () {
+    return 'Microscope Working';
+});
+```
+
+Run first scan:
+
+```bash
+php artisan check:all
+```
+
+---
+
+## 4. Create Demo Controller (For Testing)
+
+```bash
+php artisan make:controller DemoController
+```
+
+Open:
+
+```
+app/Http/Controllers/DemoController.php
+```
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+class DemoController extends Controller
+{
+    public function index()
+    {
+        $name = "Harry";
+
+        if ($name) {
+            return "Hello";
+        }
+            return "World";
+        
+
+        return $undefinedVariable;
+    }
+}
+```
+
+---
+
+## 5. Connect Controller to Route
+
+Open:
+
+```
+routes/web.php
+```
+
+```php
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DemoController;
+
+Route::get('/', [DemoController::class, 'index']);
+```
+
+---
+
+## 6. Check Unused Imports
+
+Run:
+
+```bash
+php artisan check:imports
+```
+
+It will show:
+
+* Extra import: User
+* Unused import: Product
+
+Fix manually:
+
+Remove:
+
+```php
+use App\Models\User;
+use App\Models\Product;
+```
+
+Run again:
+
+```bash
+php artisan check:imports
+```
+<img width="547" height="461" alt="Screenshot 2026-02-17 121319" src="https://github.com/user-attachments/assets/cbbcd7a2-542b-4219-814d-215ca82330a1" />
+
+---
+
+## 7. Refactor Nested Logic (Early Returns)
+
+Run:
+
+```bash
+php artisan check:early_returns
+```
+<img width="596" height="438" alt="Screenshot 2026-02-17 121439" src="https://github.com/user-attachments/assets/08f212cd-853e-4573-b503-89edb16aa67d" />
+
+
+Type:
+
+```
+yes
+```
+
+It converts:
+
+```php
+if ($name) {
+    return "Hello";
+} else {
+    return "World";
+}
+```
+
+Into:
+
+```php
+if (! $name) {
+    return "World";
+}
+
+return "Hello";
+```
+
+---
+
+## 8. Detect Dead Controller Methods
+
+Add this inside controller:
+
+```php
+public function unusedMethod() 
+{ 
+    return "Not used"; 
+}
+```
+
+Run:
+
+```bash
+php artisan check:dead_controllers
+```
+<img width="762" height="179" alt="Screenshot 2026-02-17 121608" src="https://github.com/user-attachments/assets/d649752e-58d3-45ab-b6a3-bd3d6c8bbdf0" />
+
+
+It detects unused public methods.
+
+---
+
+## 9. Route Validation Demo
+
+Break route intentionally:
+
+```php
+Route::get('/', [DemoController::class, 'wrongMethod']);
+```
+
+Run:
+
+```bash
+php artisan check:routes
+```
+<img width="624" height="314" alt="Screenshot 2026-02-17 125439" src="https://github.com/user-attachments/assets/897d06c8-8949-4823-9bf6-6df5b75eba59" />
+
+
+It reports:
+
+* Method does not exist
+
+Fix back to:
+
+```php
+Route::get('/', [DemoController::class, 'index']);
+```
+
+Run again:
+
+```bash
+php artisan check:routes
+```
+<img width="567" height="319" alt="Screenshot 2026-02-17 122051" src="https://github.com/user-attachments/assets/44392390-a90d-4481-b666-eb1332ef1ed3" />
+
+---
+
+## 10. Detect Bad Practices
+
+Add inside controller:
+
+```php
+public function index()
+{
+    $value = env('APP_NAME');   
+
+    return "Hello";
+}
+```
+
+Run:
+
+```bash
+php artisan check:bad_practices
+```
+<img width="595" height="346" alt="Screenshot 2026-02-17 130049" src="https://github.com/user-attachments/assets/87a12ca6-0b74-4d9a-a10a-1109746c9e4e" />
+
+
+It reports:
+
+```
+env() used outside config file.
+```
+
+Fix properly:
+
+```php
+public function index()
+{
+    $value = config('app.name');   
+
+    return "Hello";
+}
+```
+
+Run again:
+
+```bash
+php artisan check:bad_practices
+```
+<img width="580" height="293" alt="Screenshot 2026-02-17 130218" src="https://github.com/user-attachments/assets/38583f9b-87c9-45aa-b367-a764d3064dc6" />
+
+---
+
+## 11. Remove Debug Statements Automatically
+
+Add inside controller:
+
+```php
+public function index()
+{
+    dd("Testing Microscope"); 
+
+    return "Hello";
+}
+```
+
+Create `search_replace.php`
+
+Run:
+
+```bash
+php artisan search_replace
+```
+
+Open file:
+
+```
+search_replace.php
+```
+
+```php
+<?php
+
+return [
+
+    'remove_dd' => [
+        'search' => "'<global_func_call:dd,dump>'('<in_between>');",
+        'replace' => '',
+    ],
+
+];
+```
+
+Run:
+
+```bash
+php artisan search_replace --name=remove_dd
+```
+<img width="678" height="400" alt="Screenshot 2026-02-17 122016" src="https://github.com/user-attachments/assets/a3e4b36a-25cf-416d-8ce8-9ed0e8c2dedd" />
+
+
+It will detect:
+
+Replacing:
+
+```php
+dd("Testing Microscope");
+```
+
+Type:
+
+```
+yes
+```
+
+Debug line removed automatically.
+
+---
+
+## 12. Enforce Imports
+
+If you write:
+
+```php
+public function index()
+{
+    $user = new \App\Models\User();   
+
+    return "Hello";
+}
+```
+
+Run:
+
+```bash
+php artisan enforce:imports
+```
+<img width="665" height="248" alt="Screenshot 2026-02-17 131934" src="https://github.com/user-attachments/assets/d8ee4ee2-705a-4fe1-9403-0628bf4abb95" />
+
+
+It converts to:
+
+```php
+use App\Models\User;
+
+public function index()
+{
+    $user = new User();  
+
+    return "Hello";
+}
+```
+
+---
+
+## 13. Final Full Clean Scan
+
+Run:
+
+```bash
+php artisan check:all
+```
+<img width="526" height="804" alt="Screenshot 2026-02-17 122613" src="https://github.com/user-attachments/assets/d58674d4-56b9-46a9-8cb3-daddd497768e" />
+
+<img width="535" height="697" alt="Screenshot 2026-02-17 122648" src="https://github.com/user-attachments/assets/8b849eca-d1a8-4eb0-b95e-b6fd90ef3fbc" />
+
+<img width="749" height="467" alt="Screenshot 2026-02-17 122702" src="https://github.com/user-attachments/assets/37987d46-b18b-45ab-8685-ffb092a266dc" />
+
+
+You should see:
+
+```
+0 wrong imports found
+All view() calls are correct
+No dead controller action found
+No env() misuse found
+```
+
+---
+
+## 14. Recommended Daily Workflow
+
+### During Development
+
+```bash
+php artisan check:imports
+php artisan check:routes
+php artisan check:views
+```
+<img width="542" height="289" alt="Screenshot 2026-02-17 132649" src="https://github.com/user-attachments/assets/d2950138-40a4-4c3e-b60e-958918c3ec7e" />
+
+
+### Before Commit
+
+```bash
+php artisan check:all
+```
