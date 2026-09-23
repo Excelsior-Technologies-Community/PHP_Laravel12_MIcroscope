@@ -30,11 +30,16 @@ class MicroscopeQualityGate extends Command
 
         $output = Artisan::output();
 
-        $duration = round(microtime(true) - $startedAt, 3);
+        $duration = round(
+            microtime(true) - $startedAt,
+            3
+        );
 
         $issuesFound = $this->countIssues($output);
 
-        $status = $exitCode === 0 ? 'passed' : 'failed';
+        $status = $exitCode === 0
+            ? 'passed'
+            : 'failed';
 
         MicroscopeScan::create([
             'scan_type' => 'quality-gate',
@@ -48,16 +53,26 @@ class MicroscopeQualityGate extends Command
 
         $this->newLine();
 
-        $this->line('Scan Duration: ' . $duration . ' seconds');
-        $this->line('Detected Issues: ' . $issuesFound);
-        $this->line('Exit Code: ' . $exitCode);
+        $this->line(
+            'Scan Duration: ' . $duration . ' seconds'
+        );
+
+        $this->line(
+            'Detected Issues: ' . $issuesFound
+        );
+
+        $this->line(
+            'Exit Code: ' . $exitCode
+        );
 
         $this->newLine();
 
         if ($exitCode === 0) {
             $this->info('QUALITY GATE PASSED');
 
-            $this->line('The project passed the Microscope full scan.');
+            $this->line(
+                'The project passed the Microscope full scan.'
+            );
 
             $this->newLine();
 
@@ -66,20 +81,21 @@ class MicroscopeQualityGate extends Command
 
         $this->error('QUALITY GATE FAILED');
 
-        $this->line('The project contains Microscope-detected issues.');
+        $this->line(
+            'The project contains Microscope-detected issues.'
+        );
 
         $this->newLine();
 
-        $this->warn('Review the Microscope output before committing your changes.');
+        $this->warn(
+            'Review the Microscope output before committing your changes.'
+        );
 
         $this->newLine();
 
         return self::FAILURE;
     }
 
-    /**
-     * Count likely issue messages from Microscope output.
-     */
     private function countIssues(string $output): int
     {
         $patterns = [
@@ -99,7 +115,11 @@ class MicroscopeQualityGate extends Command
         $count = 0;
 
         foreach ($patterns as $pattern) {
-            preg_match_all($pattern, $output, $matches);
+            preg_match_all(
+                $pattern,
+                $output,
+                $matches
+            );
 
             $count += count($matches[0]);
         }
