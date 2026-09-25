@@ -120,4 +120,62 @@ Route::prefix('microscope')
             MicroscopeDashboardController::class,
             'exportJson',
         ])->name('export.json');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Static Analysis & Pint Auto-Fixer
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/static-analysis', [
+            MicroscopeDashboardController::class,
+            'staticAnalysis',
+        ])->name('static-analysis');
+
+        Route::post('/larastan/run', [
+            MicroscopeDashboardController::class,
+            'runLarastan',
+        ])->name('larastan.run');
+
+        Route::post('/pint/fix', [
+            MicroscopeDashboardController::class,
+            'runPint',
+        ])->name('pint.fix');
+
+        Route::post('/debug-clean', [
+            MicroscopeDashboardController::class,
+            'cleanDebug',
+        ])->name('debug-clean');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Security Audit & CVE Scanner
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/security-audit', [
+            MicroscopeDashboardController::class,
+            'securityAudit',
+        ])->name('security-audit');
+
+        Route::post('/security-audit/run', [
+            MicroscopeDashboardController::class,
+            'runSecurityAudit',
+        ])->name('security-audit.run');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Performance & Dead Asset Analyzer
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/performance-analyzer', [
+            MicroscopeDashboardController::class,
+            'performanceAnalyzer',
+        ])->name('performance-analyzer');
+
+        Route::post('/performance-analyzer/scan', [
+            MicroscopeDashboardController::class,
+            'scanPerformance',
+        ])->name('performance-analyzer.scan');
     });
