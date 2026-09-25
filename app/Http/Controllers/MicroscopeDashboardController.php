@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MicroscopeScan;
+use App\Services\MicroscopeAnalysisService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -568,7 +569,10 @@ class MicroscopeDashboardController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        if ($issues === 0) {
+        if ($issues !== 0){
+
+        return $issues;
+    } 
             $fallbackPatterns = [
                 '/unused import/i',
                 '/extra import/i',
@@ -586,8 +590,100 @@ class MicroscopeDashboardController extends Controller
 
                 $issues += count($matches[0]);
             }
-        }
+        
 
         return $issues;
+    }
+
+    /**
+     * Display Static Analysis & Pint Auto-Fixer UI.
+     */
+    public function staticAnalysis(Request $request, MicroscopeAnalysisService $service)
+    {
+        $level = (int)$request->input('level', 0);
+        $stanResults = session('stan_results', $service->runLarastanScan($level));
+        $debugStatements = $service->scanDebugStatements();
+
+        return view('microscope.static_analysis', compact('stanResults', 'debugStatements', 'level'));
+    }
+
+    /**
+     * Run Larastan / PHPStan scan.
+     */
+    public function runLarastan(Request $request, MicroscopeAnalysisService $service)
+    {
+        $level = (int)$request->input('level', 0);
+        $results = $service->runLarastanScan($level);
+
+        return redirect()->route('microscope.static-analysis', ['level' => $level])
+            ->with('stan_results', $results)
+            ->with('success', "Larastan static type check completed at Level {$level}. Found {$results['total_errors']} issue(s).");
+    }
+
+    /**
+     * Run Laravel Pint code formatter.
+     */
+    public function runPint(Request $request, MicroscopeAnalysisService $service)
+    {
+        $dryRun = $request->has('dry_run');
+        $result = $service->runPintFixer($dryRun);
+
+        return redirect()->route('microscope.static-analysis')
+            ->with('success', $dryRun ? "Laravel Pint dry-run test completed." : "Laravel Pint code auto-formatter executed successfully!");
+    }
+
+    /**
+     * Clean leftover debug statements.
+     */
+    public function cleanDebug(MicroscopeAnalysisService $service)
+    {
+        $cleaned = $service->cleanDebugStatements();
+
+        return redirect()->route('microscope.static-analysis')
+            ->with('success', "Successfully cleaned {$cleaned} leftover debug statement(s) from code!");
+    }
+
+    /**
+     * Display Security Audit UI.
+     */
+    public function securityAudit(MicroscopeAnalysisService $service)
+    {
+        $composerAudit = session('composer_audit', $service->runComposerSecurityAudit());
+        $securitySmells = $service->scanSecuritySmells();
+
+        return view('microscope.security_audit', compact('composerAudit', 'securitySmells'));
+    }
+
+    /**
+     * Run composer security audit.
+     */
+    public function runSecurityAudit(MicroscopeAnalysisService $service)
+    {
+        $result = $service->runComposerSecurityAudit();
+
+        return redirect()->route('microscope.security-audit')
+            ->with('composer_audit', $result)
+            ->with('success', 'Composer security audit completed.');
+    }
+
+    /**
+     * Display Performance & Dead Asset Analyzer UI.
+     */
+    public function performanceAnalyzer(MicroscopeAnalysisService $service)
+    {
+        $analysis = $service->analyzeDeadAssets();
+
+        return view('microscope.performance_analyzer', compact('analysis'));
+    }
+
+    /**
+     * Run performance scan.
+     */
+    public function scanPerformance(MicroscopeAnalysisService $service)
+    {
+        $analysis = $service->analyzeDeadAssets();
+
+        return redirect()->route('microscope.performance-analyzer')
+            ->with('success', 'Performance and dead assets scan completed.');
     }
 }
