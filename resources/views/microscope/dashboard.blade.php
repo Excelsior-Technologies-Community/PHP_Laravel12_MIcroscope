@@ -85,28 +85,16 @@
 
                 </div>
 
-                <div class="d-flex gap-2">
-
-                    <form
-                        method="POST"
-                        action="{{ route('microscope.scan') }}">
-
+                <div class="d-flex gap-2 flex-wrap">
+                    <a href="{{ route('microscope.dashboard') }}" class="btn btn-light fw-bold">🔬 Dashboard</a>
+                    <a href="{{ route('microscope.static-analysis') }}" class="btn btn-outline-light">🔍 Static Analysis</a>
+                    <a href="{{ route('microscope.security-audit') }}" class="btn btn-outline-light">🛡️ Security Audit</a>
+                    <a href="{{ route('microscope.performance-analyzer') }}" class="btn btn-outline-light">⚡ Performance</a>
+                    <a href="{{ route('microscope.history') }}" class="btn btn-outline-light">📋 History</a>
+                    <form method="POST" action="{{ route('microscope.scan') }}" class="d-inline">
                         @csrf
-
-                        <button
-                            type="submit"
-                            class="btn btn-light">
-                            🔍 Run Full Scan
-                        </button>
-
+                        <button type="submit" class="btn btn-warning fw-bold">🔍 Run Scan</button>
                     </form>
-
-                    <a
-                        href="{{ route('microscope.history') }}"
-                        class="btn btn-outline-light">
-                        📋 History
-                    </a>
-
                 </div>
 
             </div>
